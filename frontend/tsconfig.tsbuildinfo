@@ -1,0 +1,1 @@
+{"root":["./src/env.d.ts","./src/main.ts","./src/api/telegram.ts","./src/router/index.ts","./src/stores/telegramstore.ts","./src/app.vue","./src/pages/telegramintegrationpage.vue"],"version":"5.6.3"}

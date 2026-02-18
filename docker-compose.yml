@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: growth_pg
+    restart: always
+    environment:
+      POSTGRES_DB: growth
+      POSTGRES_USER: growth
+      POSTGRES_PASSWORD: growth
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: growth_backend
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgresql://growth:growth@postgres:5432/growth
+
+  frontend:
+    build: ./frontend
+    container_name: growth_frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules   # ← КЛЮЧЕВОЕ
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    environment:
+      VITE_API_ORIGIN: http://backend:8000
+
+volumes:
+  pgdata:
